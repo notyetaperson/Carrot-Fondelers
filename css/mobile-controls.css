@@ -1,0 +1,153 @@
+/**
+ * Touch HUD — sprites from `Assets/UI/Mobile` (see `js/mobileControls.js`).
+ */
+#mobile-controls {
+  position: fixed;
+  inset: 0;
+  z-index: 48;
+  pointer-events: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#mobile-controls.mobile-controls--hidden {
+  display: none !important;
+}
+
+.mobile-controls__inner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(100px, 26vmin) minmax(0, 1fr) minmax(120px, 30vmin);
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  padding: 0 10px max(10px, env(safe-area-inset-bottom))
+    max(10px, env(safe-area-inset-right));
+  padding-left: max(10px, env(safe-area-inset-left));
+  padding-top: max(8px, env(safe-area-inset-top));
+  gap: 0 8px;
+  pointer-events: none;
+}
+
+.mobile-controls__stick {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  align-self: end;
+  position: relative;
+  width: min(26vmin, 168px);
+  height: min(26vmin, 168px);
+  margin-bottom: 4px;
+  touch-action: none;
+  pointer-events: auto;
+}
+
+.mobile-controls__stick-pad {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.mobile-controls__stick-nub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 38%;
+  height: 38%;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.mobile-controls__look {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  align-self: stretch;
+  min-height: 120px;
+  margin-bottom: 4px;
+  touch-action: none;
+  pointer-events: auto;
+  cursor: move;
+}
+
+.mobile-controls__actions {
+  grid-column: 3;
+  grid-row: 1 / -1;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 4px;
+  pointer-events: auto;
+}
+
+.mobile-controls__row {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.mobile-controls__btn {
+  position: relative;
+  display: block;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
+}
+
+.mobile-controls__btn:active {
+  filter: brightness(1.08) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+}
+
+.mobile-controls__btn--sm {
+  width: 48px;
+  height: 48px;
+}
+
+.mobile-controls__btn--md {
+  width: 54px;
+  height: 54px;
+}
+
+.mobile-controls__btn--lg {
+  width: 72px;
+  height: 72px;
+}
+
+.mobile-controls__btn-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.mobile-controls__btn-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46%;
+  height: 46%;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-controls__btn:active {
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4));
+  }
+}

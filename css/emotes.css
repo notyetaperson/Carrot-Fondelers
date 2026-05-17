@@ -1,0 +1,113 @@
+/**
+ * In-world emote pop + bottom quick-bar (`js/emotes.js`). Sprites: `Assets/UI/Emote`.
+ */
+#emote-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) translateY(calc(100% + 14px));
+  z-index: 57;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px 14px;
+  pointer-events: none;
+  user-select: none;
+  transition: transform 0.22s ease;
+  background: rgba(8, 12, 20, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+  backdrop-filter: blur(10px);
+}
+
+#emote-bar.emote-bar--open {
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.emote-bar__hint {
+  font:
+    10px/1.1 "Kenney Future",
+    system-ui,
+    sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(200, 215, 255, 0.75);
+}
+
+.emote-bar__track {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.emote-bar__slot {
+  display: block;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.emote-bar__slot:hover {
+  border-color: rgba(255, 220, 160, 0.45);
+  background: rgba(40, 28, 18, 0.35);
+}
+
+.emote-bar__slot:active {
+  transform: scale(0.94);
+}
+
+.emote-bar__icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+#emote-pop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: min(64px, 16vmin);
+  height: min(64px, 16vmin);
+  margin-left: 0;
+  margin-top: 0;
+  transform: translate(-50%, calc(-100% - 8px));
+  z-index: 90;
+  pointer-events: none;
+  object-fit: contain;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.12s ease,
+    visibility 0.12s ease;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.45));
+}
+
+#emote-pop.emote-pop--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+body.startup-seq-active #emote-bar,
+body.ending-seq-active #emote-bar,
+body.level-cutscene-active #emote-bar,
+body.startup-seq-active #emote-pop,
+body.ending-seq-active #emote-pop,
+body.level-cutscene-active #emote-pop {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}

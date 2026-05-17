@@ -1,0 +1,18 @@
+/**
+ * Fullscreen additive canvas from `js/mouseEffects.js` (soft-light blend).
+ */
+#mouse-fx-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #mouse-fx-canvas {
+    display: none !important;
+  }
+}

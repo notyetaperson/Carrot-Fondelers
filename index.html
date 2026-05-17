@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Carrot Fondelers</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/text-effects.css" />
+    <link rel="stylesheet" href="css/mouse-effects.css" />
+    <link rel="stylesheet" href="css/mobile-controls.css" />
+    <link rel="stylesheet" href="css/emotes.css" />
+    <link rel="stylesheet" href="css/main-ui-theme.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/",
+          "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.8.3/build/index.module.js"
+        }
+      }
+    </script>
+  </head>
+  <body class="progression-hud--rank">
+    <div id="kill-counter" class="kill-counter main-ui-plate" aria-live="polite">
+      <span class="kill-counter__label">Kills</span>
+      <span id="kill-counter-value" class="kill-counter__value text-fx--gold-shimmer">0</span>
+    </div>
+    <div id="progress-badges" class="progress-badges">
+      <div id="medal-badge" class="medal-badge main-ui-plate" aria-live="polite">
+        <span class="medal-badge__label">Medal</span>
+        <img
+          id="medal-badge-img"
+          class="medal-badge__img"
+          alt=""
+          width="72"
+          height="72"
+          decoding="async"
+        />
+        <span id="medal-badge-step" class="medal-badge__step"></span>
+      </div>
+      <div id="rank-badge" class="rank-badge main-ui-plate" aria-live="polite">
+        <span class="rank-badge__label">Rank</span>
+        <img
+          id="rank-badge-img"
+          class="rank-badge__img"
+          alt=""
+          width="72"
+          height="72"
+          decoding="async"
+        />
+        <span id="rank-badge-step" class="rank-badge__step"></span>
+      </div>
+    </div>
+    <canvas id="game"></canvas>
+    <div
+      id="mobile-controls"
+      class="mobile-controls mobile-controls--hidden"
+      aria-hidden="true"
+    >
+      <div class="mobile-controls__inner">
+        <div
+          id="mobile-controls-stick"
+          class="mobile-controls__stick"
+          aria-label="Move"
+        >
+          <img class="mobile-controls__stick-pad" alt="" decoding="async" />
+          <img class="mobile-controls__stick-nub" alt="" decoding="async" />
+        </div>
+        <div
+          id="mobile-controls-look"
+          class="mobile-controls__look"
+          aria-label="Look around"
+        ></div>
+        <div class="mobile-controls__actions">
+          <div class="mobile-controls__row">
+            <button
+              type="button"
+              class="mobile-controls__btn mobile-controls__btn--sm"
+              data-mc-btn="wprev"
+              aria-label="Previous weapon"
+            >
+              <img class="mobile-controls__btn-face" alt="" decoding="async" />
+            </button>
+            <button
+              type="button"
+              class="mobile-controls__btn mobile-controls__btn--sm"
+              data-mc-btn="wnext"
+              aria-label="Next weapon"
+            >
+              <img class="mobile-controls__btn-face" alt="" decoding="async" />
+            </button>
+          </div>
+          <button
+            type="button"
+            class="mobile-controls__btn mobile-controls__btn--md"
+            data-mc-btn="jump"
+            aria-label="Jump"
+          >
+            <img class="mobile-controls__btn-face" alt="" decoding="async" />
+            <img
+              class="mobile-controls__btn-icon"
+              data-mc-icon="jump"
+              alt=""
+              decoding="async"
+            />
+          </button>
+          <button
+            type="button"
+            class="mobile-controls__btn mobile-controls__btn--md"
+            data-mc-btn="sprint"
+            aria-label="Sprint (hold)"
+          >
+            <img class="mobile-controls__btn-face" alt="" decoding="async" />
+            <img
+              class="mobile-controls__btn-icon"
+              data-mc-icon="sprint"
+              alt=""
+              decoding="async"
+            />
+          </button>
+          <div class="mobile-controls__row">
+            <button
+              type="button"
+              class="mobile-controls__btn mobile-controls__btn--md"
+              data-mc-btn="parley"
+              aria-label="Parley"
+            >
+              <img class="mobile-controls__btn-face" alt="" decoding="async" />
+              <img
+                class="mobile-controls__btn-icon"
+                data-mc-icon="parley"
+                alt=""
+                decoding="async"
+              />
+            </button>
+            <button
+              type="button"
+              class="mobile-controls__btn mobile-controls__btn--md"
+              data-mc-btn="potion"
+              aria-label="Drink potion"
+            >
+              <img class="mobile-controls__btn-face" alt="" decoding="async" />
+              <img
+                class="mobile-controls__btn-icon"
+                data-mc-icon="potion"
+                alt=""
+                decoding="async"
+              />
+            </button>
+          </div>
+          <div class="mobile-controls__row">
+            <button
+              type="button"
+              class="mobile-controls__btn mobile-controls__btn--md"
+              data-mc-btn="phase"
+              aria-label="Phase dash"
+            >
+              <img class="mobile-controls__btn-face" alt="" decoding="async" />
+              <img
+                class="mobile-controls__btn-icon"
+                data-mc-icon="phase"
+                alt=""
+                decoding="async"
+              />
+            </button>
+            <button
+              type="button"
+              class="mobile-controls__btn mobile-controls__btn--md"
+              data-mc-btn="shock"
+              aria-label="Shockwave"
+            >
+              <img class="mobile-controls__btn-face" alt="" decoding="async" />
+              <img
+                class="mobile-controls__btn-icon"
+                data-mc-icon="shock"
+                alt=""
+                decoding="async"
+              />
+            </button>
+          </div>
+          <button
+            type="button"
+            class="mobile-controls__btn mobile-controls__btn--lg"
+            data-mc-btn="atk"
+            aria-label="Attack"
+          >
+            <img class="mobile-controls__btn-face" alt="" decoding="async" />
+            <img
+              class="mobile-controls__btn-icon"
+              data-mc-icon="atk"
+              alt=""
+              decoding="async"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      id="weapon-hotbar"
+      class="weapon-hotbar main-ui-hud-panel"
+      aria-label="Weapon loadout"
+      aria-hidden="true"
+    >
+      <span class="weapon-hotbar__title text-fx--loadout">Loadout</span>
+      <div id="weapon-hotbar-track" class="weapon-hotbar__track"></div>
+    </div>
+    <div
+      id="damage-flash"
+      class="damage-flash"
+      aria-hidden="true"
+    ></div>
+    <div
+      id="hit-flash"
+      class="hit-flash"
+      aria-hidden="true"
+    ></div>
+    <div
+      id="low-health-vignette"
+      class="low-health-vignette"
+      aria-hidden="true"
+    ></div>
+    <div id="health-hud" class="health-hud main-ui-hud-panel" aria-live="polite">
+      <span class="health-hud__title text-fx--muted-breathe">Health</span>
+      <div class="health-hud__track main-ui-bar-sm">
+        <span class="main-ui-bar-sm__l" aria-hidden="true"></span>
+        <div class="main-ui-bar-sm__c">
+          <div id="health-bar-fill" class="health-hud__fill"></div>
+        </div>
+        <span class="main-ui-bar-sm__r" aria-hidden="true"></span>
+      </div>
+      <span id="health-bar-label" class="health-hud__label">100 / 100</span>
+      <span id="weapon-hud" class="health-hud__weapon text-fx--gleam">
+        Weapon: Fists — 10 dmg (click)
+      </span>
+    </div>
+    <div
+      id="knockout-overlay"
+      class="knockout-overlay"
+      hidden
+      aria-hidden="true"
+    >
+      <div class="knockout-overlay__veil" aria-hidden="true"></div>
+      <div class="knockout-overlay__pulse" aria-hidden="true"></div>
+      <div class="knockout-overlay__vignette" aria-hidden="true"></div>
+      <div class="knockout-overlay__content">
+        <p class="knockout-overlay__title text-fx--chromatic">Knocked out</p>
+        <p class="knockout-overlay__sub">Press R to respawn</p>
+      </div>
+    </div>
+    <div
+      id="parley-prompt"
+      class="parley-sign"
+      hidden
+      aria-hidden="true"
+      role="status"
+    >
+      <div class="parley-sign__inner">
+        <div
+          class="parley-sign__board"
+          id="parley-sign-board"
+          aria-label="Pigs nearby — press F to parley when one is in view"
+        >
+          <span id="parley-sign-title" class="parley-sign__title text-fx--sign">Pigs nearby</span>
+        </div>
+        <p id="parley-prompt-sub" class="parley-sign__sub"></p>
+      </div>
+    </div>
+    <div
+      id="negotiate-toast"
+      class="negotiate-toast negotiate-toast--info text-fx--toast main-ui-toast"
+      hidden
+      role="status"
+      aria-live="polite"
+    ></div>
+    <img
+      id="crosshair"
+      class="crosshair"
+      src="Assets/UI/Crosshair/crosshair019.png"
+      alt=""
+      width="64"
+      height="64"
+      decoding="async"
+    />
+    <p id="hint">
+      Click — look &amp; attack (melee; bow / Desert Eagle = straight carrot bolts 20 or 30 dmg; ~1/10 &amp; ~1/20 drops) · Wheel — hotbar · Right-click — drink selected potion · WASD — move · Shift — sprint · Q — phase dash (brief i-frames) · U — shockwave (blue ring 10s, 4 dmg/touch, 1 min CD) ·
+      Space — jump + 2 air jumps (refill on landing) · F — parley when the orange sign shows; friends
+      may join too · E — emotes (1–8 when bar is open) · R —
+      respawn when down<span id="hint-dev-console" hidden> · Y — dev console</span> · Esc — pause
+    </p>
+    <img id="emote-pop" alt="" decoding="async" />
+    <div id="emote-bar" class="emote-bar" aria-hidden="true">
+      <span class="emote-bar__hint">E · 1–8</span>
+      <div class="emote-bar__track">
+        <button type="button" class="emote-bar__slot" data-emote-slot="0" aria-label="Emote 1">
+          <img class="emote-bar__icon" alt="" decoding="async" />
+        </button>
+        <button type="button" class="emote-bar__slot" data-emote-slot="1" aria-label="Emote 2">
+          <img class="emote-bar__icon" alt="" decoding="async" />
+        </button>
+        <button type="button" class="emote-bar__slot" data-emote-slot="2" aria-label="Emote 3">
+          <img class="emote-bar__icon" alt="" decoding="async" />
+        </button>
+        <button type="button" class="emote-bar__slot" data-emote-slot="3" aria-label="Emote 4">
+          <img class="emote-bar__icon" alt="" decoding="async" />
+        </button>
+        <button type="button" class="emote-bar__slot" data-emote-slot="4" aria-label="Emote 5">
+          <img class="emote-bar__icon" alt="" decoding="async" />
+        </button>
+        <button type="button" class="emote-bar__slot" data-emote-slot="5" aria-label="Emote 6">
+          <img class="emote-bar__icon" alt="" decoding="async" />
+        </button>
+        <button type="button" class="emote-bar__slot" data-emote-slot="6" aria-label="Emote 7">
+          <img class="emote-bar__icon" alt="" decoding="async" />
+        </button>
+        <button type="button" class="emote-bar__slot" data-emote-slot="7" aria-label="Emote 8">
+          <img class="emote-bar__icon" alt="" decoding="async" />
+        </button>
+      </div>
+    </div>
+    <div
+      id="dev-console"
+      class="dev-console dev-console--hidden"
+      aria-hidden="true"
+    >
+      <div class="dev-console__header">
+        <span class="dev-console__title text-fx--console">Dev</span>
+        <span class="dev-console__hint">Y close · help</span>
+      </div>
+      <pre id="dev-console-log" class="dev-console__log"></pre>
+      <form id="dev-console-form" class="dev-console__form" autocomplete="off">
+        <input
+          id="dev-console-input"
+          class="dev-console__input"
+          type="text"
+          spellcheck="false"
+          placeholder="die · kill · talk · level"
+        />
+      </form>
+      <div class="dev-console__btns">
+        <button type="button" class="dev-console__btn" data-dev-cmd="die">
+          die
+        </button>
+        <button type="button" class="dev-console__btn" data-dev-cmd="kill">
+          kill
+        </button>
+        <button type="button" class="dev-console__btn" data-dev-cmd="talk">
+          talk
+        </button>
+        <button type="button" class="dev-console__btn" data-dev-cmd="level">
+          level
+        </button>
+      </div>
+    </div>
+    <div
+      id="pause-menu"
+      class="pause-menu pause-menu--hidden"
+      aria-hidden="true"
+    >
+      <div class="pause-menu__backdrop"></div>
+      <div
+        class="pause-menu__panel main-ui-pause-panel"
+        role="dialog"
+        aria-labelledby="pause-title"
+      >
+        <h2 id="pause-title" class="pause-menu__title text-fx--ember">Paused</h2>
+        <p class="pause-menu__sub">Carrot Fondelers</p>
+        <label class="pause-menu__option">
+          <input
+            type="checkbox"
+            id="pause-pig-oinkish"
+            name="pig-oinkish"
+          />
+          <span class="pause-menu__option-label">Oinkish pig dialogue</span>
+        </label>
+        <p class="pause-menu__option-hint">
+          Off by default — parley lines stay in English.
+        </p>
+        <label class="pause-menu__option">
+          <input
+            type="checkbox"
+            id="pause-bgm-enabled"
+            name="bgm-enabled"
+            checked
+          />
+          <span class="pause-menu__option-label">Background music</span>
+        </label>
+        <p class="pause-menu__option-hint">
+          Uncheck to silence BGM — saved in this browser.
+        </p>
+        <label
+          class="pause-menu__skin"
+          for="pause-postfx-grade"
+          id="pause-postfx-grade-wrap"
+        >
+          <span class="pause-menu__skin-label">Shader grade preset</span>
+          <select
+            id="pause-postfx-grade"
+            class="pause-menu__select"
+            aria-label="Post-processing color grade preset"
+          ></select>
+        </label>
+        <p class="pause-menu__skin-hint" id="pause-postfx-grade-hint">
+          Full-screen grade after bloom. Ten looks — saved in this browser.
+        </p>
+        <label class="pause-menu__skin" for="pause-progression-display">
+          <span class="pause-menu__skin-label">Earn progression as</span>
+          <select
+            id="pause-progression-display"
+            class="pause-menu__select"
+            aria-label="Show rank or level badge"
+          >
+            <option value="rank" selected>Rank (Ranks art)</option>
+            <option value="level">Level (Medals art)</option>
+          </select>
+        </label>
+        <p class="pause-menu__skin-hint">
+          Default: rank icon from Assets/UI/Ranks. Switch to level to show only
+          the medal strip from Assets/UI/Medals. Saved in this browser.
+        </p>
+        <label class="pause-menu__skin" for="pause-ui-color">
+          <span class="pause-menu__skin-label">Main UI color</span>
+          <select
+            id="pause-ui-color"
+            class="pause-menu__select"
+            aria-label="Main HUD color theme"
+          ></select>
+        </label>
+        <label class="pause-menu__skin" for="pause-ui-density">
+          <span class="pause-menu__skin-label">Main UI art size</span>
+          <select
+            id="pause-ui-density"
+            class="pause-menu__select"
+            aria-label="Main HUD sprite resolution"
+          ></select>
+        </label>
+        <p class="pause-menu__skin-hint">
+          HUD, hotbar, pause frame, and weapon slot tiles use
+          <code>Assets/UI/UI</code> — default is <strong>Double (2×)</strong>; pick
+          Default (1×) for the smaller pack. Saved in this browser.
+        </p>
+        <label class="pause-menu__skin" for="pause-player-skin">
+          <span class="pause-menu__skin-label">Character skin</span>
+          <select
+            id="pause-player-skin"
+            class="pause-menu__select"
+            aria-label="Character skin"
+          ></select>
+        </label>
+        <p class="pause-menu__skin-hint">
+          Swaps your model instantly. Saved in this browser.
+        </p>
+        <label class="pause-menu__skin" for="pause-mobile-touch-mode">
+          <span class="pause-menu__skin-label">Touch controls</span>
+          <select
+            id="pause-mobile-touch-mode"
+            class="pause-menu__select"
+            aria-label="Touch controls visibility"
+          >
+            <option value="auto">Automatic (touch or coarse pointer)</option>
+            <option value="on">Always show</option>
+            <option value="off">Hidden</option>
+          </select>
+        </label>
+        <p class="pause-menu__skin-hint">
+          On-screen move stick, look drag, and action buttons. While visible, tap
+          the game to focus without pointer lock. Saved in this browser.
+        </p>
+        <label class="pause-menu__skin" for="pause-mobile-style">
+          <span class="pause-menu__skin-label">Touch control art style</span>
+          <select
+            id="pause-mobile-style"
+            class="pause-menu__select"
+            aria-label="Touch HUD art pack"
+          >
+            <option value="a">Style A</option>
+            <option value="b">Style B</option>
+            <option value="c">Style C</option>
+            <option value="d">Style D</option>
+            <option value="e">Style E</option>
+            <option value="f">Style F</option>
+            <option value="g">Style G</option>
+            <option value="h">Style H</option>
+          </select>
+        </label>
+        <p class="pause-menu__skin-hint">
+          Sprite pack under Assets/UI/Mobile (Style A–H). Saved in this browser.
+        </p>
+        <label class="pause-menu__skin" for="pause-rank-style">
+          <span class="pause-menu__skin-label">Rank badge style</span>
+          <select
+            id="pause-rank-style"
+            class="pause-menu__select"
+            aria-label="Rank badge color tier"
+          >
+            <option value="black">Black</option>
+            <option value="bronze">Bronze</option>
+            <option value="silver">Silver</option>
+            <option value="gold">Gold</option>
+          </select>
+        </label>
+        <p class="pause-menu__skin-hint">
+          One rank art per level (Arena through Final Arena). Files in
+          Assets/UI/Ranks. Saved in this browser.
+        </p>
+        <label class="pause-menu__skin" for="pause-medal-style">
+          <span class="pause-menu__skin-label">Medal style</span>
+          <select
+            id="pause-medal-style"
+            class="pause-menu__select"
+            aria-label="Medal art pack"
+          >
+            <option value="flat">Flat</option>
+            <option value="flatshadow">Flat shadow</option>
+            <option value="shaded">Shaded</option>
+          </select>
+        </label>
+        <p class="pause-menu__skin-hint">
+          One medal per stage (`medal1` … `medal9`). Files in Assets/UI/Medals.
+          Saved in this browser.
+        </p>
+        <label class="pause-menu__skin" for="pause-emote-style">
+          <span class="pause-menu__skin-label">Emote set</span>
+          <select
+            id="pause-emote-style"
+            class="pause-menu__select"
+            aria-label="Emote quick-bar style"
+          ></select>
+        </label>
+        <p class="pause-menu__skin-hint">
+          Eight slots per set — Classic, Expressions, Battle, Sparkle. Press E in-game
+          to open the bar; 1–8 or click. Assets/UI/Emote. Saved in this browser.
+        </p>
+        <section class="pause-menu__guide" aria-label="Field guide">
+          <div class="pause-menu__guide-glow" aria-hidden="true"></div>
+          <header class="pause-menu__guide-header">
+            <span class="pause-menu__guide-kicker">Carrot Fondelers</span>
+            <h3 class="pause-menu__guide-title text-fx--gradient-band">Field Guide</h3>
+            <span class="pause-menu__guide-rule" aria-hidden="true"></span>
+          </header>
+          <ul class="pause-menu__guide-list">
+            <li>
+              Survive, stack kills, and ride your potion effects as long as you
+              can.
+            </li>
+            <li>
+              When the orange sign shows, press <strong>F</strong> to parley —
+              allies tilt fights your way.
+            </li>
+            <li>
+              Friendly pigs draw heat; use them to breathe and reposition.
+            </li>
+            <li>
+              Bow &amp; Desert Eagle are rare drops — worth chasing on longer
+              runs.
+            </li>
+            <li>
+              <strong>Q</strong> phase dash: short i-frames — slip out of tight
+              spots.
+            </li>
+          </ul>
+        </section>
+        <div id="pause-dev-console-wrap" class="pause-menu__dev-block" hidden>
+          <button
+            type="button"
+            class="pause-menu__btn main-ui-pause-btn"
+            id="pause-open-dev-console"
+          >
+            Dev console
+          </button>
+          <p class="pause-menu__option-hint">Unlocked with Homohands — or press Y.</p>
+        </div>
+        <button
+          type="button"
+          class="pause-menu__btn main-ui-pause-btn"
+          id="pause-resume"
+        >
+          Resume
+        </button>
+        <p class="pause-menu__hint">Esc — resume</p>
+      </div>
+    </div>
+    <div
+      id="game-start-seq"
+      class="game-start-seq"
+      role="dialog"
+      aria-live="polite"
+      aria-label="Opening sequence"
+    >
+      <div class="game-start-seq__veil" aria-hidden="true"></div>
+      <div class="game-start-seq__glow" aria-hidden="true"></div>
+      <div class="game-start-seq__grain" aria-hidden="true"></div>
+      <div class="game-start-seq__content">
+        <p class="game-start-seq__kicker">The fondel begins</p>
+        <h1 class="game-start-seq__title">CARROT FONDELERS</h1>
+        <p class="game-start-seq__tag">Parley · bolt · oink</p>
+        <p class="game-start-seq__skip">
+          Enter · Esc · Space · click — begin
+        </p>
+      </div>
+    </div>
+    <div
+      id="ending-seq"
+      class="ending-seq ending-seq--hidden"
+      role="dialog"
+      aria-live="polite"
+      aria-label="Ending sequence"
+    >
+      <div class="ending-seq__veil"></div>
+      <div class="ending-seq__stars"></div>
+      <div class="ending-seq__content">
+        <p class="ending-seq__line ending-seq__line--one">
+          The arena finally goes quiet.
+        </p>
+        <p class="ending-seq__line ending-seq__line--two">
+          Every hoofbeat you saved still echoes with you.
+        </p>
+        <p class="ending-seq__line ending-seq__line--three">
+          You are not just the last one standing.
+        </p>
+        <p class="ending-seq__line ending-seq__line--four">
+          You are the one they followed home.
+        </p>
+        <p class="ending-seq__skip">Press Enter, Esc, or click to continue</p>
+      </div>
+    </div>
+    <div
+      id="level-cutscene"
+      class="level-cutscene level-cutscene--hidden"
+      role="dialog"
+      aria-live="polite"
+      aria-label="Level transition cutscene"
+    >
+      <div class="level-cutscene__veil"></div>
+      <div class="level-cutscene__fx" aria-hidden="true">
+        <div class="level-cutscene__fx-vortex"></div>
+        <div class="level-cutscene__fx-noise"></div>
+        <div class="level-cutscene__fx-hazard"></div>
+        <div class="level-cutscene__fx-strobe"></div>
+      </div>
+      <div class="level-cutscene__content">
+        <p id="level-cutscene-kicker" class="level-cutscene__kicker">Next</p>
+        <h2 id="level-cutscene-title" class="level-cutscene__title">Arena</h2>
+        <p id="level-cutscene-sub" class="level-cutscene__sub">
+          The path opens.
+        </p>
+        <p id="level-cutscene-omen" class="level-cutscene__omen" hidden></p>
+        <p class="level-cutscene__skip">Press Enter, Esc, or click to skip</p>
+      </div>
+    </div>
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

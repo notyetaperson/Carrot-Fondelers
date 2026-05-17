@@ -1,0 +1,276 @@
+/**
+ * UI text treatments (gradient flow, ember glow, chromatic rim, shimmer, toast pop) — DOM/CSS only.
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  .text-fx,
+  .text-fx--ember,
+  .text-fx--gradient-band,
+  .text-fx--sign,
+  .text-fx--gold-shimmer,
+  .text-fx--gleam,
+  .text-fx--console,
+  .text-fx--loadout,
+  .text-fx--muted-breathe,
+  .text-fx--toast,
+  .weapon-hotbar__slot--active .weapon-hotbar__abbr {
+    animation: none !important;
+  }
+}
+
+/* --- Pause “Paused” — warm ember glow pulse --- */
+.text-fx--ember {
+  animation: text-fx-ember 2.8s ease-in-out infinite;
+}
+
+@keyframes text-fx-ember {
+  0%,
+  100% {
+    color: #f4f7c4;
+    text-shadow:
+      0 2px 0 rgba(0, 0, 0, 0.35),
+      0 0 12px rgba(255, 200, 120, 0.25);
+  }
+  50% {
+    color: #fffce8;
+    text-shadow:
+      0 2px 0 rgba(0, 0, 0, 0.3),
+      0 0 18px rgba(255, 220, 140, 0.55),
+      0 0 36px rgba(255, 160, 60, 0.35),
+      0 0 52px rgba(255, 100, 40, 0.12);
+  }
+}
+
+/* --- Field guide title — shifting gold band (background-clip) --- */
+.text-fx--gradient-band {
+  display: inline-block;
+  background-image: linear-gradient(
+    105deg,
+    #c4d84a 0%,
+    #f4f7c4 22%,
+    #fff8c8 45%,
+    #e8c44a 68%,
+    #c4d84a 100%
+  );
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: text-fx-band-slide 5s ease-in-out infinite;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes text-fx-band-slide {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* --- Parley sign headline — punchy signboard + micro wobble --- */
+.text-fx--sign {
+  display: inline-block;
+  transform-origin: center bottom;
+  animation: text-fx-sign-wobble 3.2s ease-in-out infinite;
+}
+
+@keyframes text-fx-sign-wobble {
+  0%,
+  100% {
+    transform: rotate(-0.35deg) scale(1);
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.35),
+      0 0 14px rgba(255, 200, 80, 0.25);
+  }
+  50% {
+    transform: rotate(0.35deg) scale(1.02);
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.45),
+      0 0 20px rgba(255, 220, 120, 0.45);
+  }
+}
+
+/* --- Kill count — metallic shimmer --- */
+.text-fx--gold-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    #e8c878 0%,
+    #fff9e0 28%,
+    #f4e8a8 48%,
+    #ffd888 62%,
+    #e8c878 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: text-fx-shimmer-slide 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.45));
+}
+
+@keyframes text-fx-shimmer-slide {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* --- Knockout title — chromatic rim; pulse stacks with knockout-text-in (see below) --- */
+.text-fx--chromatic {
+  text-shadow:
+    -2px 0 0 rgba(255, 80, 140, 0.35),
+    2px 0 0 rgba(80, 200, 255, 0.32),
+    0 0 24px rgba(255, 255, 255, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.55);
+}
+
+@keyframes text-fx-chromatic-pulse {
+  0%,
+  100% {
+    text-shadow:
+      -2px 0 0 rgba(255, 80, 140, 0.35),
+      2px 0 0 rgba(80, 200, 255, 0.32),
+      0 0 24px rgba(255, 255, 255, 0.2),
+      0 4px 12px rgba(0, 0, 0, 0.55);
+  }
+  50% {
+    text-shadow:
+      -2.5px 0 0 rgba(255, 100, 180, 0.45),
+      2.5px 0 0 rgba(100, 220, 255, 0.42),
+      0 0 36px rgba(255, 240, 220, 0.35),
+      0 6px 18px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* --- Weapon HUD line — slow gleam on warm tint --- */
+.text-fx--gleam {
+  animation: text-fx-gleam 4s ease-in-out infinite;
+}
+
+@keyframes text-fx-gleam {
+  0%,
+  100% {
+    color: rgba(255, 210, 140, 0.88);
+    text-shadow: 0 0 0 transparent;
+  }
+  50% {
+    color: rgba(255, 235, 190, 0.98);
+    text-shadow:
+      0 0 10px rgba(255, 200, 120, 0.35),
+      0 0 22px rgba(255, 160, 80, 0.15);
+  }
+}
+
+/* --- Dev console title --- */
+.text-fx--console {
+  display: inline-block;
+  background-image: linear-gradient(
+    90deg,
+    #9fe08a 0%,
+    #f4f7c4 40%,
+    #88c4ff 100%
+  );
+  background-size: 160% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: text-fx-console-shift 4.5s linear infinite;
+}
+
+@keyframes text-fx-console-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 160% 50%;
+  }
+}
+
+/* --- Small HUD kickers (e.g. “Health”) — opacity only --- */
+.text-fx--muted-breathe {
+  animation: text-fx-muted-breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes text-fx-muted-breathe {
+  0%,
+  100% {
+    opacity: 0.82;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* --- Hotbar “Loadout” kicker --- */
+.text-fx--loadout {
+  animation: text-fx-loadout-breathe 2.6s ease-in-out infinite;
+}
+
+@keyframes text-fx-loadout-breathe {
+  0%,
+  100% {
+    letter-spacing: 0.2em;
+    opacity: 0.55;
+  }
+  50% {
+    letter-spacing: 0.26em;
+    opacity: 0.85;
+  }
+}
+
+/* --- Negotiation toast — enter pop + rim light --- */
+.text-fx--toast:not([hidden]) {
+  animation: text-fx-toast-enter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes text-fx-toast-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px) scale(0.96);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Active hotbar slot: extra “bloom” pulse on abbreviation */
+.weapon-hotbar__slot--active .weapon-hotbar__abbr {
+  animation: text-fx-slot-bloom 1.8s ease-in-out infinite;
+}
+
+@keyframes text-fx-slot-bloom {
+  0%,
+  100% {
+    text-shadow: 0 0 12px rgba(196, 216, 74, 0.35);
+  }
+  50% {
+    text-shadow:
+      0 0 18px rgba(196, 216, 74, 0.55),
+      0 0 28px rgba(196, 216, 74, 0.25);
+  }
+}
+
+/* Stack enter + chromatic pulse (style.css only sets enter on --run) */
+.knockout-overlay.knockout-overlay--run .knockout-overlay__title.text-fx--chromatic {
+  animation:
+    knockout-text-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both,
+    text-fx-chromatic-pulse 2.2s ease-in-out 1.05s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .knockout-overlay.knockout-overlay--run .knockout-overlay__title.text-fx--chromatic {
+    animation: knockout-text-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both !important;
+  }
+}
