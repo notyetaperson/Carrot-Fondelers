@@ -270,10 +270,10 @@ function levelTransitionSubtitle(fromIndex, toIndex) {
   if (toIndex >= FIRST_DUNGEON_LEVEL_INDEX && toIndex <= LAST_DUNGEON_LEVEL_INDEX) {
     const stage = DUNGEON_STAGES[toIndex - FIRST_DUNGEON_LEVEL_INDEX];
     if (stage?.displayName?.toLowerCase().includes("fire")) {
-      return "Heat and hunger rise together.";
+      return "Now were cooking!";
     }
     if (stage?.displayName?.toLowerCase().includes("light")) {
-      return "No shadows left to hide in.";
+      return "No blacks left.";
     }
     if (stage?.displayName?.toLowerCase().includes("moon")) {
       return "Even in the fog of war, a tank is still visible.";
