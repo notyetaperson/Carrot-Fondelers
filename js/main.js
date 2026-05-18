@@ -276,16 +276,16 @@ function levelTransitionSubtitle(fromIndex, toIndex) {
       return "No blacks left.";
     }
     if (stage?.displayName?.toLowerCase().includes("moon")) {
-      return "Even in the fog of war, a tank is still visible.";
+      return "Pulls more b*tches than you.";
     }
     if (stage?.displayName?.toLowerCase().includes("poison")) {
-      return "It... gave me herpes.";
+      return "|-| /-\ |\| T /-\ \/ | R \_/ S .";
     }
     if (stage?.displayName?.toLowerCase().includes("rock")) {
       return "Im rock hard.";
     }
     if (stage?.displayName?.toLowerCase().includes("water")) {
-      return "Oceans of sperm.";
+      return "Jet ski to Little St. James..";
     }
     return "Another gate, another trial.";
   }
