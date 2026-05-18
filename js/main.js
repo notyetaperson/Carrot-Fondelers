@@ -266,11 +266,11 @@ function levelNameByIndex(levelIndex) {
 }
 
 function levelTransitionSubtitle(fromIndex, toIndex) {
-  if (toIndex === 1) return "Past the dust, the crystal calls.";
+  if (toIndex === 1) return "Imma explore YOUR cave.";
   if (toIndex >= FIRST_DUNGEON_LEVEL_INDEX && toIndex <= LAST_DUNGEON_LEVEL_INDEX) {
     const stage = DUNGEON_STAGES[toIndex - FIRST_DUNGEON_LEVEL_INDEX];
     if (stage?.displayName?.toLowerCase().includes("fire")) {
-      return "Now were cooking!";
+      return "Firey dih!";
     }
     if (stage?.displayName?.toLowerCase().includes("light")) {
       return "No blacks left.";
