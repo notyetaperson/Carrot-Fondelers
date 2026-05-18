@@ -276,16 +276,16 @@ function levelTransitionSubtitle(fromIndex, toIndex) {
       return "No shadows left to hide in.";
     }
     if (stage?.displayName?.toLowerCase().includes("moon")) {
-      return "The night keeps score.";
+      return "Even in the fog of war, a tank is still visible.";
     }
     if (stage?.displayName?.toLowerCase().includes("poison")) {
-      return "Breathe shallow. Strike true.";
+      return "It... gave me herpes.";
     }
     if (stage?.displayName?.toLowerCase().includes("rock")) {
-      return "Stone remembers every footprint.";
+      return "Im rock hard.";
     }
     if (stage?.displayName?.toLowerCase().includes("water")) {
-      return "The tide answers only courage.";
+      return "Oceans of sperm.";
     }
     return "Another gate, another trial.";
   }
