@@ -266,26 +266,26 @@ function levelNameByIndex(levelIndex) {
 }
 
 function levelTransitionSubtitle(fromIndex, toIndex) {
-  if (toIndex === 1) return "Imma explore YOUR cave.";
+  if (toIndex === 1) return "C R Y S T A L.";
   if (toIndex >= FIRST_DUNGEON_LEVEL_INDEX && toIndex <= LAST_DUNGEON_LEVEL_INDEX) {
     const stage = DUNGEON_STAGES[toIndex - FIRST_DUNGEON_LEVEL_INDEX];
     if (stage?.displayName?.toLowerCase().includes("fire")) {
-      return "Firey dih!";
+      return "H E A T";
     }
     if (stage?.displayName?.toLowerCase().includes("light")) {
-      return "No blacks left.";
+      return "W H I T E";
     }
     if (stage?.displayName?.toLowerCase().includes("moon")) {
-      return "Pulls more b*tches than you.";
+      return "T I D E";
     }
     if (stage?.displayName?.toLowerCase().includes("poison")) {
-      return "|-| /-\ |\| T /-\ \/ | R \_/ S .";
+      return "H A N T A V I R U S";
     }
     if (stage?.displayName?.toLowerCase().includes("rock")) {
-      return "Im rock hard.";
+      return "S T O N E.";
     }
     if (stage?.displayName?.toLowerCase().includes("water")) {
-      return "Jet ski to Little St. James..";
+      return "A Q U A T I C";
     }
     return "Another gate, another trial.";
   }
